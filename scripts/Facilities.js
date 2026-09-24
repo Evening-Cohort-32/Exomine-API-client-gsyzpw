@@ -1,7 +1,8 @@
 import { state, setFacility } from './TransientState.js'
+const baseURL = "http://localhost:5000"
 
 export const Facilities = async () => {
-    const response = await fetch("http://localhost:3000/facilities")
+    const response = await fetch(`${baseURL}/facilities`)
     const facilities = await response.json()
 
     const activeFacilities = facilities.filter((facility) => {

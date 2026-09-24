@@ -1,4 +1,5 @@
 import { FacilityMinerals } from "./FacilityMinerals.js";
+const baseURL = "http://localhost:5000"
 
 export const state = {}; //Empty Object
 
@@ -55,7 +56,7 @@ export const purchaseMaterial = async (selectedColonyMineral,selectedColonyId,is
       }),
    };
     fetch(
-      `http://localhost:3000/colonyMinerals/${selectedColonyMineral.id}`,
+      `${baseURL}/colonyMinerals/${selectedColonyMineral.id}`,
       colonyPutOptions,
     );
   }
@@ -74,7 +75,7 @@ export const purchaseMaterial = async (selectedColonyMineral,selectedColonyId,is
         quantity: 1,
       }),
    };
-   fetch(`http://localhost:3000/colonyMinerals`,colonyPostOptions)
+   fetch(`${baseURL}/colonyMinerals`,colonyPostOptions)
   }
 
   //Remove 1 ton from facility mineral quantity
@@ -92,7 +93,7 @@ export const purchaseMaterial = async (selectedColonyMineral,selectedColonyId,is
       quantity: selectedFacilityMineral.quantity - 1,
     })
   }
-  fetch(`http://localhost:3000/facilityMinerals/${selectedFacilityMineral.id}`,facilityPutOption)
+  fetch(`${baseURL}/facilityMinerals/${selectedFacilityMineral.id}`,facilityPutOption)
   document.dispatchEvent(new CustomEvent("stateChanged"));
 
 }
@@ -100,7 +101,7 @@ export const purchaseMaterial = async (selectedColonyMineral,selectedColonyId,is
 
 //funstion for finding selected facilityMineral
 const findSelectedFacilityMineral = async () =>{
-  let allFacilityMinerals = await fetch(`http://localhost:3000/facilityMinerals`).then(res => res.json())
+  let allFacilityMinerals = await fetch(`${baseURL}/facilityMinerals`).then(res => res.json())
   for (const facilityMineral of allFacilityMinerals) {
     if(facilityMineral.mineralId === state.selectedMineral &&
       facilityMineral.facilityId === state.selectedFacility

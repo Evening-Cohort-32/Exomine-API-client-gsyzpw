@@ -1,15 +1,16 @@
 import { getState, purchaseMaterial } from "./TransientState.js";
+const baseURL = "http://localhost:5000"
 
 export const makePurchase = async () => {
   let currentState = getState();
   let isNewInventory = false
 
   let selectedGovernor = await fetch(
-    `http://localhost:3000/governors/${currentState.selectedGovernor}`,
+    `${baseURL}/governors/${currentState.selectedGovernor}`,
   ).then((res) => res.json());
 
   const allColonyMinerals = await fetch(
-    "http://localhost:3000/colonyMinerals/",
+    `${baseURL}/colonyMinerals/`,
   ).then((res) => res.json());
 
   let selectedColonyMinerals = {};

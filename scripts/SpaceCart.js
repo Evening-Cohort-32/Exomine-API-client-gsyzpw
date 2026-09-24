@@ -1,5 +1,6 @@
 import { makePurchase } from "./Purchase.js";
 import { state } from "./TransientState.js";
+const baseURL = "http://localhost:5000"
 
 export const spaceCart = async () => {
   if (!state.selectedMineral) {
@@ -14,12 +15,12 @@ export const spaceCart = async () => {
         `;
   }
   const facilityResponse = await fetch(
-    `http://localhost:3000/facilities/${state.selectedFacility}`,
+    `${baseURL}/facilities/${state.selectedFacility}`,
   );
   const facility = await facilityResponse.json();
 
   const mineralResponse = await fetch(
-    `http://localhost:3000/minerals/${state.selectedMineral}`,
+    `${baseURL}/minerals/${state.selectedMineral}`,
   );
   const mineral = await mineralResponse.json();
   return `
