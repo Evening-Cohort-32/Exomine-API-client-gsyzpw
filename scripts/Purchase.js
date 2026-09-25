@@ -9,7 +9,7 @@ export const makePurchase = async () => {
     `${baseURL}/governors/${currentState.selectedGovernor}`,
   ).then((res) => res.json());
 
-  const allColonyMinerals = await fetch(`${baseURL}/colonyMinerals/`).then(
+  const allColonyMinerals = await fetch(`${baseURL}/colonyInventory`).then(
     (res) => res.json(),
   );
 

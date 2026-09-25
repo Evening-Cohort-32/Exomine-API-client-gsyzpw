@@ -15,7 +15,7 @@ export const spaceCart = async () => {
         `;
   }
   const facilityResponse = await fetch(
-    `${baseURL}/facilities/${state.selectedFacility}`,
+    `${baseURL}/miningfacilities/${state.selectedFacility}`,
   );
   const facility = await facilityResponse.json();
 

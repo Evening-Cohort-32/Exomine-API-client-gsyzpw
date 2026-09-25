@@ -5,13 +5,13 @@ export const FacilityMinerals = async () => {
   const facilityMineralsResponse = await fetch(`${baseURL}/facilityInventory`);
   const facilityMinerals = await facilityMineralsResponse.json();
 
-  const mineralsResponse = await fetch(`${baseURL}/mineral`);
+  const mineralsResponse = await fetch(`${baseURL}/minerals`);
   const minerals = await mineralsResponse.json();
 
   const availableMinerals = facilityMinerals.filter((facilityMineral) => {
     return (
-      facilityMineral.facilityId === parseInt(state.selectedFacility) &&
-      facilityMineral.quantity > 0
+      facilityMineral.miningFacilityId === parseInt(state.selectedFacility) &&
+      facilityMineral.saleQuantity > 0
     );
   });
 
@@ -34,7 +34,7 @@ export const FacilityMinerals = async () => {
         value="${mineral.id}"
         />
         <label for="mineral-${facilityMineral.id}">
-        ${mineral.name} - Quantity: ${facilityMineral.quantity}
+        ${mineral.name} - Quantity: ${facilityMineral.saleQuantity}
         </label>
         </div>
         `;

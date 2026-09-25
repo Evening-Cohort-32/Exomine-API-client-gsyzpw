@@ -6,12 +6,12 @@ export const Facilities = async () => {
   const facilities = await response.json();
 
   const activeFacilities = facilities.filter((facility) => {
-    return facility.active === true;
+    return facility.status === true;
   });
 
   let html = `<section class="facilities">
         <label>Choose a facility</label>
-        <select id="facility-select" ${state.selectedGovernorId === 0 ? "disabled" : ""}>
+        <select id="facility-select" ${!state.selectedGovernor ? "disabled" : ""}>
             <option value="0">Choose a Facility...</option>
     `;
 

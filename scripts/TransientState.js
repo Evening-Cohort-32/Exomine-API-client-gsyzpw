@@ -56,7 +56,7 @@ export const purchaseMaterial = async (
       }),
     };
     fetch(
-      `${baseURL}/colonyMinerals/${selectedColonyMineral.id}`,
+      `${baseURL}/colonyInventory/${selectedColonyMineral.id}`,
       colonyPutOptions,
     );
   }
@@ -75,8 +75,22 @@ export const purchaseMaterial = async (
         quantity: 1,
       }),
     };
-    fetch(`${baseURL}/colonyMinerals`, colonyPostOptions);
+    fetch(`${baseURL}/colonyInventory`, colonyPostOptions);
   }
+
+  //funstion for finding selected facilityMineral
+  const findSelectedFacilityMineral = async () => {
+    let allFacilityMinerals = await fetch(`${baseURL}/facilityInventory`).then(
+      (res) => res.json(),
+    );
+    for (const facilityMineral of allFacilityMinerals) {
+      if (
+        facilityMineral.mineralId === state.selectedMineral &&
+        facilityMineral.miningFacilityId === state.selectedFacility
+      )
+        return facilityMineral;
+    }
+  };
 
   //Remove 1 ton from facility mineral quantity
   let selectedFacilityMineral = await findSelectedFacilityMineral();
@@ -88,28 +102,16 @@ export const purchaseMaterial = async (
     },
     body: JSON.stringify({
       id: selectedFacilityMineral.id,
-      facilityId: selectedFacilityMineral.facilityId,
+      miningFacilityId: selectedFacilityMineral.miningFacilityId,
       mineralId: state.selectedMineral,
-      quantity: selectedFacilityMineral.quantity - 1,
+      saleQuantity: selectedFacilityMineral.saleQuantity - 1,
     }),
   };
   fetch(
-    `${baseURL}/facilityMinerals/${selectedFacilityMineral.id}`,
+    `${baseURL}/facilityInventory/${selectedFacilityMineral.id}`,
     facilityPutOption,
   );
-  document.dispatchEvent(new CustomEvent("stateChanged"));
-};
+  state.selectedMineral = null;
 
-//funstion for finding selected facilityMineral
-const findSelectedFacilityMineral = async () => {
-  let allFacilityMinerals = await fetch(`${baseURL}/facilityMinerals`).then(
-    (res) => res.json(),
-  );
-  for (const facilityMineral of allFacilityMinerals) {
-    if (
-      facilityMineral.mineralId === state.selectedMineral &&
-      facilityMineral.facilityId === state.selectedFacility
-    )
-      return facilityMineral;
-  }
+  document.dispatchEvent(new CustomEvent("stateChanged"));
 };

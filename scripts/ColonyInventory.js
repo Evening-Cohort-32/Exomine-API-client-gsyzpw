@@ -9,7 +9,7 @@ export const colonyInventory = async () => {
   }
 
   const governorResponse = await fetch(
-    `${baseURL}/governors/${state.selectedGovernor}?_expand=colony`,
+    `${baseURL}/governors/${state.selectedGovernor}`,
   );
   const governor = await governorResponse.json();
 
