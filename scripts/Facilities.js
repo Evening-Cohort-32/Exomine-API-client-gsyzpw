@@ -1,35 +1,36 @@
-import { state, setFacility } from './TransientState.js'
-const baseURL = "http://localhost:5000"
+import { state, setFacility } from "./TransientState.js";
+const baseURL = "https://localhost:5001/api";
 
 export const Facilities = async () => {
-    const response = await fetch(`${baseURL}/facilities`)
-    const facilities = await response.json()
+  const response = await fetch(`${baseURL}/miningfacilities`);
+  const facilities = await response.json();
 
-    const activeFacilities = facilities.filter((facility) => {
-        return facility.active === true
-    })
+  const activeFacilities = facilities.filter((facility) => {
+    return facility.active === true;
+  });
 
-    let html = `<section class="facilities">
+  let html = `<section class="facilities">
         <label>Choose a facility</label>
         <select id="facility-select" ${state.selectedGovernorId === 0 ? "disabled" : ""}>
             <option value="0">Choose a Facility...</option>
-    `
+    `;
 
-    for (const facility of activeFacilities) {   
-        const selected = facility.id === parseInt(state.selectedFacility) ? "selected" : ""
-        html += `
-        <option value="${facility.id}" ${selected}>${facility.name}</option>`
-    }
+  for (const facility of activeFacilities) {
+    const selected =
+      facility.id === parseInt(state.selectedFacility) ? "selected" : "";
+    html += `
+        <option value="${facility.id}" ${selected}>${facility.name}</option>`;
+  }
 
-    html += `</select></section>`
+  html += `</select></section>`;
 
-    return html
-}
+  return html;
+};
 
 const handleFacilitySelected = (event) => {
-    if (event.target.id === "facility-select") {
-        setFacility(event.target.value)
-    }
-}
+  if (event.target.id === "facility-select") {
+    setFacility(event.target.value);
+  }
+};
 
-document.addEventListener("change", handleFacilitySelected)
+document.addEventListener("change", handleFacilitySelected);

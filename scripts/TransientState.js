@@ -1,5 +1,5 @@
 import { FacilityMinerals } from "./FacilityMinerals.js";
-const baseURL = "http://localhost:5000"
+const baseURL = "https://localhost:5001/api";
 
 export const state = {}; //Empty Object
 
@@ -34,14 +34,14 @@ export const getState = () => {
   return { ...state }; // spread creates a new object, not a reference
 };
 
-
-
-
 //When Purchase button is clicked a put or post fetch is sent to the API.
-export const purchaseMaterial = async (selectedColonyMineral,selectedColonyId,isNewInventory
+export const purchaseMaterial = async (
+  selectedColonyMineral,
+  selectedColonyId,
+  isNewInventory,
 ) => {
   //Checks weather to perform a put fetch for existing colony inventories or a post fetch for a new inventory.
-  if(isNewInventory === false){
+  if (isNewInventory === false) {
     //Put option
     let colonyPutOptions = {
       method: "put",
@@ -49,12 +49,12 @@ export const purchaseMaterial = async (selectedColonyMineral,selectedColonyId,is
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-       id: selectedColonyMineral.id,
-       colonyId: selectedColonyMineral.colonyId,
+        id: selectedColonyMineral.id,
+        colonyId: selectedColonyMineral.colonyId,
         mineralId: selectedColonyMineral.mineralId,
         quantity: selectedColonyMineral.quantity + 1,
       }),
-   };
+    };
     fetch(
       `${baseURL}/colonyMinerals/${selectedColonyMineral.id}`,
       colonyPutOptions,
@@ -62,50 +62,54 @@ export const purchaseMaterial = async (selectedColonyMineral,selectedColonyId,is
   }
 
   //Post option
-  else if (isNewInventory === true){
-    debugger
-      let colonyPostOptions = {
+  else if (isNewInventory === true) {
+    debugger;
+    let colonyPostOptions = {
       method: "post",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-       colonyId: selectedColonyId,
+        colonyId: selectedColonyId,
         mineralId: state.selectedMineral,
         quantity: 1,
       }),
-   };
-   fetch(`${baseURL}/colonyMinerals`,colonyPostOptions)
+    };
+    fetch(`${baseURL}/colonyMinerals`, colonyPostOptions);
   }
 
   //Remove 1 ton from facility mineral quantity
-  let selectedFacilityMineral = await findSelectedFacilityMineral()
+  let selectedFacilityMineral = await findSelectedFacilityMineral();
 
   let facilityPutOption = {
     method: "put",
-    headers:{
-      "content-type":"application/json",
+    headers: {
+      "content-type": "application/json",
     },
-    body:JSON.stringify({
+    body: JSON.stringify({
       id: selectedFacilityMineral.id,
       facilityId: selectedFacilityMineral.facilityId,
       mineralId: state.selectedMineral,
       quantity: selectedFacilityMineral.quantity - 1,
-    })
-  }
-  fetch(`${baseURL}/facilityMinerals/${selectedFacilityMineral.id}`,facilityPutOption)
+    }),
+  };
+  fetch(
+    `${baseURL}/facilityMinerals/${selectedFacilityMineral.id}`,
+    facilityPutOption,
+  );
   document.dispatchEvent(new CustomEvent("stateChanged"));
-
-}
-
+};
 
 //funstion for finding selected facilityMineral
-const findSelectedFacilityMineral = async () =>{
-  let allFacilityMinerals = await fetch(`${baseURL}/facilityMinerals`).then(res => res.json())
+const findSelectedFacilityMineral = async () => {
+  let allFacilityMinerals = await fetch(`${baseURL}/facilityMinerals`).then(
+    (res) => res.json(),
+  );
   for (const facilityMineral of allFacilityMinerals) {
-    if(facilityMineral.mineralId === state.selectedMineral &&
+    if (
+      facilityMineral.mineralId === state.selectedMineral &&
       facilityMineral.facilityId === state.selectedFacility
     )
-    return facilityMineral
+      return facilityMineral;
   }
-}
+};

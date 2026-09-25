@@ -1,6 +1,6 @@
 import { makePurchase } from "./Purchase.js";
 import { state } from "./TransientState.js";
-const baseURL = "http://localhost:5000"
+const baseURL = "https://localhost:5001/api";
 
 export const spaceCart = async () => {
   if (!state.selectedMineral) {

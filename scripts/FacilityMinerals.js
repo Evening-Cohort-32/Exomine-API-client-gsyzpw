@@ -1,13 +1,11 @@
 import { state } from "./TransientState.js";
-const baseURL = "http://localhost:5000"
+const baseURL = "https://localhost:5001/api";
 
 export const FacilityMinerals = async () => {
-  const facilityMineralsResponse = await fetch(
-    `${baseURL}/facilityMinerals`,
-  );
+  const facilityMineralsResponse = await fetch(`${baseURL}/facilityInventory`);
   const facilityMinerals = await facilityMineralsResponse.json();
 
-  const mineralsResponse = await fetch(`${baseURL}/minerals`);
+  const mineralsResponse = await fetch(`${baseURL}/mineral`);
   const minerals = await mineralsResponse.json();
 
   const availableMinerals = facilityMinerals.filter((facilityMineral) => {

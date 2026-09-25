@@ -1,5 +1,5 @@
 import { getState } from "./TransientState.js";
-const baseURL = "http://localhost:5000"
+const baseURL = "https://localhost:5001/api";
 
 export const colonyInventory = async () => {
   const state = getState();
@@ -14,7 +14,7 @@ export const colonyInventory = async () => {
   const governor = await governorResponse.json();
 
   const colonyMineralsResponse = await fetch(
-    `${baseURL}/colonyMinerals?_expand=mineral`,
+    `${baseURL}/colonyInventory?_expand=mineral`,
   );
   const allColonyMinerals = await colonyMineralsResponse.json();
 

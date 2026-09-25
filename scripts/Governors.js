@@ -1,29 +1,31 @@
-import { getState, setGovernor } from "./TransientState.js"
-const baseURL = "http://localhost:5000"
+import { getState, setGovernor } from "./TransientState.js";
+const baseURL = "https://localhost:5001/api";
 
-export const governorOptions = async() =>{
-    const state = getState()
-    const allGovernors = await fetch(`${baseURL}/governors`).then(res => res.json())
-    let html = `
+export const governorOptions = async () => {
+  const state = getState();
+  const allGovernors = await fetch(`${baseURL}/governors`).then((res) =>
+    res.json(),
+  );
+  let html = `
     <label for="governors">Choose a governor</label>
     <select id="governors" name ="governors">
     <option value="">Select a Governor...</option>
-    `
-    const govStringArray = allGovernors.map((governor) => {
-        const selected = governor.id === parseInt(state.selectedGovernor) ? "selected" : ""
-        return `
-        <option value="${governor.id}" ${selected}>${governor.name}</option>`
-    })
-    html += govStringArray.join("")
-    html += `</select>`
-    return html
-}
+    `;
+  const govStringArray = allGovernors.map((governor) => {
+    const selected =
+      governor.id === parseInt(state.selectedGovernor) ? "selected" : "";
+    return `
+        <option value="${governor.id}" ${selected}>${governor.name}</option>`;
+  });
+  html += govStringArray.join("");
+  html += `</select>`;
+  return html;
+};
 
+const handleGovernorSelected = (event) => {
+  if (event.target.id === "governors") {
+    setGovernor(event.target.value);
+  }
+};
 
-const handleGovernorSelected = (event) =>{
- if(event.target.id === "governors"){
-    setGovernor(event.target.value)
- }
-}
-
-document.addEventListener("change", handleGovernorSelected)
+document.addEventListener("change", handleGovernorSelected);
